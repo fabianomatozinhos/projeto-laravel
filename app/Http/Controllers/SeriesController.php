@@ -31,8 +31,11 @@ class SeriesController extends Controller
         //return view('listar-series', compact('series'));
 
         //ou
+        $mensagemSucesso = $request->session()->get('mensagem.sucesso');
+        //$request->session()->forget('mensagem.sucesso');
         return view('series.index')
-                ->with('series' , $series);
+                ->with('series' , $series)
+                ->with('mensagemSucesso', $mensagemSucesso);
     }
 
     public function create()
@@ -56,13 +59,71 @@ class SeriesController extends Controller
         return view('series.create');
     }
 
+    // public function store(Request $request)
+    // {
+    //     //dd($request->all());
+    //     $nomeSerie = $request->input('nome');
+    //     //ou
+    //     $nomeSerie = $request->nome;
+    //     #DB::insert('INSERT INTO series (nome) VALUES (?)', [$nomeSerie]);
+        
+    //     //opcao 1 criar um objeto e inserir
+    //     //$serie = new Serie();
+    //     //$serie->nome =  $nomeSerie;
+    //     //$serie->save();
+
+    //     //opcao 2 criar
+    //     $serie = Serie::create($request->all());
+    //     //Serie::create($request->only(['nome']));
+    //     //Serie::create($request->except(['_toke']));
+    //     $request->session()->flash('mensagem.sucesso',"Série '{$serie->nome}' criada com sucesso ");
+    //     return to_route('series.index');
+    //     //return redirect('/series');
+    // }
+
     public function store(Request $request)
     {
-        $nomeSerie = $request->input('nome');
-        #DB::insert('INSERT INTO series (nome) VALUES (?)', [$nomeSerie]);
-        $serie = new Serie();
-        $serie->nome =  $nomeSerie;
+        $nomeSerie = $request->nome;
+        $serie = Serie::create($request->all());
+        return to_route('series.index')
+            ->with('mensagem.sucesso',"Série '{$serie->nome}' criada com sucesso ");
+    }
+
+    // public function destroy(Request $request)
+    // {
+    //     $serie = Serie::find($request->id);
+    //     Serie::destroy($request->id);
+    //     //$request->session()->put('mensagem.sucesso', 'Série removida com sucesso');
+    //     $request->session()->flash('mensagem.sucesso', "Série {$serie->nome} removida com sucesso");
+    //     return to_route('series.index');
+    // }
+
+    // public function destroy(Serie $serie, Request $request)
+    // {
+    //     $serie->delete();
+    //     $request->session()->flash('mensagem.sucesso', "Série {$serie->nome} removida com sucesso");
+    //     return to_route('series.index');
+    // }
+
+    public function destroy(Serie $serie, Request $request)
+    {
+        $serie->delete();
+        return to_route('series.index')
+            ->with('mensagem.sucesso', "Série {$serie->nome} removida com sucesso");
+    }
+
+    public function edit(Serie $serie){
+        return view('series.edit')
+            ->with('serie', $serie);
+    }
+
+    public function update(Serie $serie, Request $request)
+    {
+        //$serie->nome = $request->nome;
+        $serie->fill($request->all());
         $serie->save();
-        return redirect('/series');
+
+        return  to_route('series.index')
+        ->with('mensagem.sucesso', "Série {$serie->nome} atualizada com sucesso");
     }
 }

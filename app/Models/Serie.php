@@ -9,4 +9,6 @@ class Serie extends Model
 {
     use HasFactory;
     protected $table = 'series';
+
+    protected $fillable = ['nome'];
 }
