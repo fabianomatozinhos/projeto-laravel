@@ -89,6 +89,18 @@ class SeriesController extends Controller
 
         $nomeSerie = $request->nome;
         $serie = Serie::create($request->all());
+        for ($i=1; $i <= $request->numero_temporada; $i++) { 
+
+            $temporada = $serie->temporada()->create([
+                'numero' => $i
+            ]);
+
+            for ($j=1; $j <= $request->eps_temporada; $j++) { 
+                $temporada->episodio()->create([
+                   'numero' => $j
+                ]);
+            }
+        }
         return to_route('series.index')
             ->with('mensagem.sucesso',"Série '{$serie->nome}' criada com sucesso ");
     }
@@ -116,7 +128,9 @@ class SeriesController extends Controller
             ->with('mensagem.sucesso', "Série {$serie->nome} removida com sucesso");
     }
 
-    public function edit(Serie $serie){
+    public function edit(Serie $serie)
+    {
+        //dd($serie->temporada());
         return view('series.edit')
             ->with('serie', $serie);
     }
