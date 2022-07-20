@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Temporada;
+use App\Models\Episodio;
 
 class SeriesController extends Controller
 {
@@ -21,7 +23,7 @@ class SeriesController extends Controller
 
         //$series = Serie::all();
         $series = Serie::query()->orderBy('nome',  'desc')->get();
-          
+
         //ou
         // return view('listar-series', [
         //     'series' => $series
@@ -90,17 +92,27 @@ class SeriesController extends Controller
         $nomeSerie = $request->nome;
         $serie = Serie::create($request->all());
         for ($i=1; $i <= $request->numero_temporada; $i++) { 
+            $temporada[] = [
+                'series_id' => $serie->id,
+                'numero' => $i,
+            ];
+        }
 
-            $temporada = $serie->temporada()->create([
-                'numero' => $i
-            ]);
+        Temporada::insert($temporada);
 
+        $episodios = [];
+        foreach ($serie->temporada as $key => $temporada) {
+            
             for ($j=1; $j <= $request->eps_temporada; $j++) { 
-                $temporada->episodio()->create([
-                   'numero' => $j
-                ]);
+                $episodios[] = [
+                    'temporada_id' => $temporada->id,
+                    'numero' => $j
+                ];
             }
         }
+
+        Episodio::insert($episodios);
+        
         return to_route('series.index')
             ->with('mensagem.sucesso',"Série '{$serie->nome}' criada com sucesso ");
     }

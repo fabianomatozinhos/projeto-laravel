@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\TemporadaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,3 +31,5 @@ Route::controller(SeriesController::class)->group(function () {
     Route::get('/series/edit/{serie}',  'edit')->name('series.edit');
     Route::put('/series/update/{serie}',  'update')->name('series.update');
 });
+
+Route::get('/series/{serie}/temporada', [TemporadaController::class, 'index'])->name('temporada.index');
