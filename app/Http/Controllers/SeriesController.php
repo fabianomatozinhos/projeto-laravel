@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Serie;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\Temporada;
-use App\Models\Episodio;
+use App\Repositorios\EloquentSeriesRepositorio;
+use App\Repositorios\SeriesRepositorioInterface;
 
 class SeriesController extends Controller
 {
+
+    public function __construct(private SeriesRepositorioInterface $repositorio)
+    {
+        
+    }
+
     public function index(Request $request)
     {
         //return redirect('https://www.google.com');
@@ -83,36 +88,10 @@ class SeriesController extends Controller
     //     //return redirect('/series');
     // }
 
-    public function store(Request $request)
+    public function store(Request $request, EloquentSeriesRepositorio $repositorio)
     {
-        $request->validate([
-            'nome' => 'required|min:3'
-        ]);
+        $serie = $repositorio->add($request);
 
-        $nomeSerie = $request->nome;
-        $serie = Serie::create($request->all());
-        for ($i=1; $i <= $request->numero_temporada; $i++) { 
-            $temporada[] = [
-                'series_id' => $serie->id,
-                'numero' => $i,
-            ];
-        }
-
-        Temporada::insert($temporada);
-
-        $episodios = [];
-        foreach ($serie->temporada as $key => $temporada) {
-            
-            for ($j=1; $j <= $request->eps_temporada; $j++) { 
-                $episodios[] = [
-                    'temporada_id' => $temporada->id,
-                    'numero' => $j
-                ];
-            }
-        }
-
-        Episodio::insert($episodios);
-        
         return to_route('series.index')
             ->with('mensagem.sucesso',"Série '{$serie->nome}' criada com sucesso ");
     }

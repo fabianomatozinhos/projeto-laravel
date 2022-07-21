@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\EpisodioController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\TemporadaController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,3 +35,8 @@ Route::controller(SeriesController::class)->group(function () {
 });
 
 Route::get('/series/{serie}/temporada', [TemporadaController::class, 'index'])->name('temporada.index');
+
+Route::get('/series/{temporada}/episodio', [EpisodioController::class, 'index'])->name('episodio.index');
+Route::post('/series/{temporada}/episodio', function(Request $request){
+    dd($request->all());
+});

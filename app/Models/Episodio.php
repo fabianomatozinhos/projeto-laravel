@@ -9,6 +9,7 @@ class Episodio extends Model
 {
     use HasFactory;
     protected $fillable = ['numero'];
+    protected $casts = ['assitido' => 'boolean'];
 
     public function temporada()
     {
