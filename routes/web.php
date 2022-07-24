@@ -37,6 +37,4 @@ Route::controller(SeriesController::class)->group(function () {
 Route::get('/series/{serie}/temporada', [TemporadaController::class, 'index'])->name('temporada.index');
 
 Route::get('/series/{temporada}/episodio', [EpisodioController::class, 'index'])->name('episodio.index');
-Route::post('/series/{temporada}/episodio', function(Request $request){
-    dd($request->all());
-});
+Route::post('/series/{temporada}/episodio', [EpisodioController::class, 'update'])->name('episodio.atualizar');

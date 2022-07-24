@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,4 +16,11 @@ class Episodio extends Model
     {
         return $this->belongsTo(Temporada::class);
     }
+
+
+    public function scopeAssistido(Builder $query)
+    {
+        $query->where('assistido', true);
+    }
+
 }
