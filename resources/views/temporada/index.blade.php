@@ -6,9 +6,11 @@
                 Temporada {{ $temporada->numero }}
                 
                 <span class="badge bg-secondary">
-                    {{ $temporada->episodio()->filter(
-                        fn ($episodio) => $episodio->assistido)
-                        ->count() }} / {{$temporada->episodio->count()}}
+                   <!-- {{$temporada->episodio()->assistido()->count()}} // {{$temporada->episodio->count()}} -->
+                    
+                    <!-- {{ $temporada->episodio->filter(fn ($episodio) => $episodio->assistido)->count() }} / {{$temporada->episodio->count()}} -->
+
+                    {{$temporada->numeroDeEpisodiosAssistido()}} / {{$temporada->episodio->count()}}
                 </span>
             </li>
         @endforeach
