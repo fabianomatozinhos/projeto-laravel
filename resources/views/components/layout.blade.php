@@ -9,12 +9,21 @@
 </head>
 <body>
 
+    <!-- se o usuario estiver logado vai exibir -->
+    @auth
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('series.index') }}">Home </a>
+            
             <a class="navbar-brand" href="{{ route('logout') }}">Sair </a>
         </div>
     </nav>
+    @endauth
+
+    <!-- se o usuario nao estiver logado vai entrar nesse codigo -->
+    @guest
+        <a class="navbar-brand" href="{{ route('login') }}">Entrar</a>
+    @endguest
 
 
     <div class="container">

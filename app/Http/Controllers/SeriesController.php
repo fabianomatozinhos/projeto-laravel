@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositorios\EloquentSeriesRepositorio;
 use App\Repositorios\SeriesRepositorioInterface;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Support\Facades\Auth;
 
 class SeriesController extends Controller
@@ -14,6 +15,7 @@ class SeriesController extends Controller
 
     public function __construct(private SeriesRepositorioInterface $repositorio)
     {
+        $this->middleware(Authenticate::class)->except('index');
         
     }
 

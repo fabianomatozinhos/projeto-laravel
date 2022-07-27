@@ -1,11 +1,17 @@
 <x-layout title="Séries" :mensagem-secusso="$mensagemSucesso">
-    <a href="{{ route('series.create') }}"  class="btn btn-dark mb-2">Nova Série</a>
    
+    @auth
+    <a href="{{ route('series.create') }}"  class="btn btn-dark mb-2">Nova Série</a>
+    @endauth
+
     <ul class="list-group">
         @foreach ($series as $key => $serie)
             <li class="list-group-item d-flex justify-content-between aligm-items-center">
-                <a href="{{ route('temporada.index', $serie->id) }}">{{ $serie->nome }}</a>
+                @auth<a href="{{ route('temporada.index', $serie->id) }}">@endauth
+                    {{ $serie->nome }}
+                @auth</a>@endauth
                 
+                @auth
                 <span class="d-flex">
 
                     <a href="{{route('series.edit', $serie->id)}}" class="btn btn-info btn-sm">Editar</a>
@@ -18,6 +24,7 @@
                         </button>
                     </form>
                 </span>
+                @endauth
             </li>
         @endforeach
     </ul>

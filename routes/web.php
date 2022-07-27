@@ -34,16 +34,24 @@ Route::get('/registrar', [UsersController::class, 'create'])->name(('user.create
 Route::post('/registrar', [UsersController::class, 'store'])->name(('user.store'));
 Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
 
-Route::controller(SeriesController::class)->group(function () {
-    Route::get('/series',  'index')->name('series.index');
-    Route::get('/series/criar',  'create')->name('series.create');
-    Route::post('/series/salvar',  'store')->name('series.store');
-    Route::delete('/series/destroy/{serie}',  'destroy')->name('series.destroy');
-    Route::get('/series/edit/{serie}',  'edit')->name('series.edit');
-    Route::put('/series/update/{serie}',  'update')->name('series.update');
+//autenticador é o apelido do middleware que foi definido no kernel
+Route::middleware('autenticador')->group(function(){
 
-    Route::get('/series/{serie}/temporada', [TemporadaController::class, 'index'])->name('temporada.index');
+    Route::controller(SeriesController::class)->group(function () {
+        Route::get('/series',  'index')->name('series.index');
+        Route::get('/series/criar',  'create')->name('series.create');
+        Route::post('/series/salvar',  'store')->name('series.store');
+        Route::delete('/series/destroy/{serie}',  'destroy')->name('series.destroy');
+        Route::get('/series/edit/{serie}',  'edit')->name('series.edit');
+        Route::put('/series/update/{serie}',  'update')->name('series.update');
     
-    Route::get('/series/{temporada}/episodio', [EpisodioController::class, 'index'])->name('episodio.index');
-    Route::post('/series/{temporada}/episodio', [EpisodioController::class, 'update'])->name('episodio.atualizar');
+        
+        Route::get('/series/{temporada}/episodio', [EpisodioController::class, 'index'])->name('episodio.index');
+        Route::post('/series/{temporada}/episodio', [EpisodioController::class, 'update'])->name('episodio.atualizar');
+    });
 });
+
+
+Route::get('/series/{serie}/temporada', [TemporadaController::class, 'index'])
+    ->name('temporada.index')
+    ->middleware('autenticador');
