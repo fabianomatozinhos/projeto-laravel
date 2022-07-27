@@ -6,6 +6,8 @@ use App\Models\Serie;
 use Illuminate\Http\Request;
 use App\Repositorios\EloquentSeriesRepositorio;
 use App\Repositorios\SeriesRepositorioInterface;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\Auth;
 
 class SeriesController extends Controller
 {
