@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Serie;
 
 class Temporada extends Model
 {
     use HasFactory;
+
+    //protected $table = 'temporadas'; 
+    protected $primaryKey = 'id';
 
     protected $fillable = ['numero'];
 

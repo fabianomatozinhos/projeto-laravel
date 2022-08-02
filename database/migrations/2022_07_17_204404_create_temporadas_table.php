@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedTinyInteger('numero');
 
-            $table->foreignId('series_id')->constrained()->onDelete('cascade');
+            //$table->foreignId('series_id')->constrained()->onDelete('cascade');
             //ou 
-            //$table->unsignedBigInteger('series_id');
-            //$table->foreign('series_id')->references('id')->on('series');
+            $table->unsignedBigInteger('series_id');
+            $table->foreign('series_id')->references('id')->on('series');
             
             $table->timestamps();
         });
