@@ -8,6 +8,7 @@ use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Autenticador;
+use App\Mail\SeriesCreated;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,9 +50,12 @@ Route::middleware('autenticador')->group(function(){
         Route::get('/series/{temporada}/episodio', [EpisodioController::class, 'index'])->name('episodio.index');
         Route::post('/series/{temporada}/episodio', [EpisodioController::class, 'update'])->name('episodio.atualizar');
     });
+
+    Route::get('/series/{serie}/temporada', [TemporadaController::class, 'index'])
+        ->name('temporada.index')
+        ->middleware('autenticador');
 });
 
-
-Route::get('/series/{serie}/temporada', [TemporadaController::class, 'index'])
-    ->name('temporada.index')
-    ->middleware('autenticador');
+Route::get('/email', function (){
+    return new SeriesCreated( 'Serie teste', 1, 5, 6);
+});

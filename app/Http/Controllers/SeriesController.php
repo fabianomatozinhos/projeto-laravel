@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SeriesCreated;
 use App\Models\Serie;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Repositorios\EloquentSeriesRepositorio;
 use App\Repositorios\SeriesRepositorioInterface;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class SeriesController extends Controller
 {
@@ -95,6 +98,22 @@ class SeriesController extends Controller
     public function store(Request $request, EloquentSeriesRepositorio $repositorio)
     {
         $serie = $repositorio->add($request);
+        $listaUsuarios = User::all();
+
+        foreach ($listaUsuarios as $key => $usuario) {
+            $email = new SeriesCreated(
+                $serie->nome,
+                $serie->id,
+                $request->numero_temporada,
+                $request->eps_temporada
+            );
+            Mail::to($usuario)->queue($email);
+            //envia o email
+            //Mail::to($usuario)->send($email);
+            //sleep(2);
+        }
+        
+        //Mail::to(Auth::user())->send($email);
 
         return to_route('series.index')
             ->with('mensagem.sucesso',"Série '{$serie->nome}' criada com sucesso ");
