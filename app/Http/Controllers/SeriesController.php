@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Repositorios\EloquentSeriesRepositorio;
 use App\Repositorios\SeriesRepositorioInterface;
+use DateTime;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Support\Facades\Auth;
@@ -107,7 +108,18 @@ class SeriesController extends Controller
                 $request->numero_temporada,
                 $request->eps_temporada
             );
-            Mail::to($usuario)->queue($email);
+
+            //adicioando tempo entre cada envio
+            // $tempo = new DateTime();
+            // $tempo->modify($key * 2 . ' seconds');
+            // Mail::to($usuario)->later($tempo, $email);
+            //ou 
+            $tempo = now()->addSeconds($key * 5);
+            Mail::to($usuario)->later($tempo, $email);
+
+            //queue envia para a fila
+            //Mail::to($usuario)->queue($email);
+            
             //envia o email
             //Mail::to($usuario)->send($email);
             //sleep(2);
