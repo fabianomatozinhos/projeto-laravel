@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EventoSerieCreated;
 use App\Mail\SeriesCreated;
 use App\Models\Serie;
 use App\Models\User;
@@ -99,34 +100,14 @@ class SeriesController extends Controller
     public function store(Request $request, EloquentSeriesRepositorio $repositorio)
     {
         $serie = $repositorio->add($request);
-        $listaUsuarios = User::all();
 
-        foreach ($listaUsuarios as $key => $usuario) {
-            $email = new SeriesCreated(
-                $serie->nome,
-                $serie->id,
-                $request->numero_temporada,
-                $request->eps_temporada
-            );
-
-            //adicioando tempo entre cada envio
-            // $tempo = new DateTime();
-            // $tempo->modify($key * 2 . ' seconds');
-            // Mail::to($usuario)->later($tempo, $email);
-            //ou 
-            $tempo = now()->addSeconds($key * 5);
-            Mail::to($usuario)->later($tempo, $email);
-
-            //queue envia para a fila
-            //Mail::to($usuario)->queue($email);
-            
-            //envia o email
-            //Mail::to($usuario)->send($email);
-            //sleep(2);
-        }
-        
-        //Mail::to(Auth::user())->send($email);
-
+        EventoSerieCreated::dispatch(
+            $serie->nome,
+            $serie->id,
+            $request->numero_temporada,
+            $request->eps_temporada
+        );
+      
         return to_route('series.index')
             ->with('mensagem.sucesso',"Série '{$serie->nome}' criada com sucesso ");
     }
