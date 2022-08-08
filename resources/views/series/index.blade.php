@@ -7,6 +7,13 @@
     <ul class="list-group">
         @foreach ($series as $key => $serie)
             <li class="list-group-item d-flex justify-content-between aligm-items-center">
+                
+            <div class="d-flex justify-center">
+                <img src="{{ asset('storage/' . $serie->capa_path) }}" class="img-thumbnail"
+                style="width: 100px;">
+            </div>
+
+            
                 @auth<a href="{{ route('temporada.index', $serie->id) }}">@endauth
                     {{ $serie->nome }}
                 @auth</a>@endauth

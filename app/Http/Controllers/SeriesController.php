@@ -99,6 +99,10 @@ class SeriesController extends Controller
 
     public function store(Request $request, EloquentSeriesRepositorio $repositorio)
     {
+        $request->capaPath = $request->hasFile('capa')
+            ? $request->file('capa')->store('capa_serie', 'public')
+            : null;
+        
         $serie = $repositorio->add($request);
 
         EventoSerieCreated::dispatch(

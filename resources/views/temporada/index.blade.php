@@ -1,4 +1,9 @@
 <x-layout title="Temporadas de {{$series->nome}}">
+    <div class="d-flex justify-center">
+        <img src="{{ asset('storage/' . $series->capa_path) }}" alt="CApa da série" class="img-fluid"
+        style="height: 400px">
+    </div>
+
     <ul class="list-group">
         @foreach ($temporadas as $key => $temporada)
             <li class="list-group-item d-flex justify-content-between aligm-items-center">

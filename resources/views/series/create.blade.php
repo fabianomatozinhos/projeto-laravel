@@ -1,5 +1,5 @@
 <x-layout title="Nova Série">
-    <form action="{{route('series.store')}}" method="post">
+    <form action="{{route('series.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="row" mb-3>
             
@@ -30,6 +30,13 @@
                     name="eps_temporada"
                     value="{{old('eps-temporada')}}"
                     >
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <label for="capa" class="form-label">Capa</label>
+                <input type="file" class="form-control" id="capa" name="capa"
+                    accept="image/gif, image/jpeg, image/png">
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Salvar</button>

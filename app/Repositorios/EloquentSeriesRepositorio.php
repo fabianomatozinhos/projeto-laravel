@@ -26,7 +26,12 @@ class EloquentSeriesRepositorio implements SeriesRepositorioInterface
                 'nome' => 'required|min:3'
             ]);
 
-            $serie = Serie::create($request->all());
+            //$serie = Serie::create($request->all());
+            $serie = Serie::create([
+                'nome' => $request->nome,
+                'capa_path' => $request->capaPath
+            ]);
+
             for ($i=1; $i <= $request->numero_temporada; $i++) { 
                 $temporada[] = [
                     'series_id' => $serie->id,

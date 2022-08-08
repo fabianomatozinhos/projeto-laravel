@@ -15,7 +15,7 @@ class Serie extends Model
     //protected $primaryKey = 'id';
     //protected $with = ['temporadas'];
 
-    protected $fillable = ['nome', 'cover'];
+    protected $fillable = ['nome', 'capa_path'];
     protected $appends = ['links'];
 
     public function temporada()
